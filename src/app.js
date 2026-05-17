@@ -65,4 +65,13 @@ app.get('/v1/companies/:id', async (req, res) => {
   });
 });
 
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not Found',
+    error_description: 'The requested route does not exist. Use GET /v1/companies/{id} to look up a company by ID.',
+    usage: 'GET /v1/companies/{id}',
+    example: `${req.protocol}://${req.get('host')}/v1/companies/1`,
+  });
+});
+
 module.exports = app;

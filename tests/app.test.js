@@ -37,6 +37,23 @@ const COMPANY_2_XML = `<?xml version="1.0" encoding="UTF-8"?>
   <description>....is not</description>
 </Data>`;
 
+describe('404 handler', () => {
+  test('returns 404 with usage hint for unknown routes', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body).toHaveProperty('error_description');
+    expect(res.body).toHaveProperty('usage', 'GET /v1/companies/{id}');
+    expect(res.body).toHaveProperty('example');
+  });
+
+  test('returns 404 for arbitrary unknown paths', async () => {
+    const res = await request(app).get('/something/random');
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty('usage', 'GET /v1/companies/{id}');
+  });
+});
+
 describe('GET /v1/companies/:id', () => {
   test('returns company 1 as JSON', async () => {
     mockFetch(200, COMPANY_1_XML);
