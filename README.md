@@ -9,7 +9,7 @@ A lightweight HTTP service that fetches company data from an XML upstream and re
 ### Base URL
 
 ```
-https://xml-transformer-example.vercel.app
+https://xml-adapter-example.vercel.app
 ```
 
 ### Get a company
@@ -60,11 +60,11 @@ Authorization: Bearer <token>
 
 ```bash
 # Fetch company 1
-curl https://xml-transformer-example.vercel.app/v1/companies/1
+curl https://xml-adapter-example.vercel.app/v1/companies/1
 
 # With an auth token
 curl -H "Authorization: Bearer mytoken" \
-  https://xml-transformer-example.vercel.app/v1/companies/1
+  https://xml-adapter-example.vercel.app/v1/companies/1
 ```
 
 ---
