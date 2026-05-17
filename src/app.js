@@ -10,9 +10,14 @@ const XML_BASE_URL =
 app.get('/v1/companies/:id', async (req, res) => {
   const { id } = req.params;
 
+  const upstreamHeaders = {};
+  if (req.headers.authorization) {
+    upstreamHeaders.Authorization = req.headers.authorization;
+  }
+
   let response;
   try {
-    response = await fetch(`${XML_BASE_URL}/${id}.xml`);
+    response = await fetch(`${XML_BASE_URL}/${id}.xml`, { headers: upstreamHeaders });
   } catch {
     return res.status(502).json({
       error: 'Bad Gateway',

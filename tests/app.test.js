@@ -43,7 +43,7 @@ describe('GET /v1/companies/:id', () => {
     const res = await request(app).get('/v1/companies/1');
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ id: 1, name: 'MWNZ', description: '..is awesome' });
-    expect(global.fetch).toHaveBeenCalledWith(`${XML_BASE}/1.xml`);
+    expect(global.fetch).toHaveBeenCalledWith(`${XML_BASE}/1.xml`, { headers: {} });
   });
 
   test('returns company 2 as JSON', async () => {
@@ -75,6 +75,20 @@ describe('GET /v1/companies/:id', () => {
     expect(res.status).toBe(502);
     expect(res.body).toHaveProperty('error');
     expect(res.body).toHaveProperty('error_description');
+  });
+
+  test('forwards Authorization header to upstream', async () => {
+    mockFetch(200, COMPANY_1_XML);
+    await request(app).get('/v1/companies/1').set('Authorization', 'Bearer token123');
+    expect(global.fetch).toHaveBeenCalledWith(`${XML_BASE}/1.xml`, {
+      headers: { Authorization: 'Bearer token123' },
+    });
+  });
+
+  test('omits Authorization header when not provided', async () => {
+    mockFetch(200, COMPANY_1_XML);
+    await request(app).get('/v1/companies/1');
+    expect(global.fetch).toHaveBeenCalledWith(`${XML_BASE}/1.xml`, { headers: {} });
   });
 
   test('returns 502 on malformed XML', async () => {
