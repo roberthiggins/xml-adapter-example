@@ -1,4 +1,4 @@
-# Transformer
+# XML Adapter Example
 
 A lightweight HTTP service that fetches company data from an XML upstream and returns it as JSON.
 
